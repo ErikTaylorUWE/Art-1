@@ -1,43 +1,40 @@
-let stopDrawing = false;
 let frameCounter = 0;
-let frameInterval = 15; // this value controls the speed
-
-setup();
-draw();
 
 function setup() {
-  createCanvas(800, 800);
+  let canvas = createCanvas(800, 800);
+  canvas.parent('canvas-frame');  // position within HTML 'div' to centre
+  canvas.mousePressed(setup); 
+  frameCounter = 0;  // reset to allow next 'draw' to create new planet.
 }
 
 function draw() {
-  // Check if drawing should continue
-  if (stopDrawing) {
-    noLoop(); // Stop drawing
+  
+  // Increment frame counter
+  frameCounter++;
+  // only draw planet on first draw. 
+  // note - mousePressed causes a 'setup', so frameCounter is reset to 0.
+  if (frameCounter > 1) {
     return;
   }
-// Increment frame counter
-  frameCounter++;
 
-  // Draw starry background
-  if (frameCounter % frameInterval == 0) {
+// Draw a new universe
+  
+  let planetX = width / 2;
+  let planetY = height / 2;
+  let planetSize = random(50,200);
+    
+
+    // Draw starry background
     background(0); // Black background for space
     drawStars(100);
-  }
 
   // Draw a randomized planet in the center
-  if (frameCounter % frameInterval == 0) {
-    drawRandomizedPlanet(width / 2, height / 2);
-  }
-}
+  drawRandomizedPlanet(planetX, planetY, planetSize);
 
-function mousePressed() {
-  // if mouse button is clicked stop the loop
-  stopDrawing = !stopDrawing;
-
-  // if mouse is clicked again, reset the loop
-  if (!stopDrawing) {
-    loop();
-  }
+  let moonDistance = planetSize * random(150, 200) / 100;
+  let moonSize = 20;  
+  drawMoon(planetX, planetY, moonDistance, moonSize);
+ 
 }
 
 // Function to draw stars
@@ -53,9 +50,8 @@ function drawStars(numStars) {
 }
 
 // Function to draw a randomized planet with a random moon
-function drawRandomizedPlanet(x, y) {
-  // Randomize planet properties
-  let planetSize = random(50, 200);
+function drawRandomizedPlanet(x, y, planetSize) {
+  // Randomize planet properties(50, 200);
   let planetColor = color(random(255), random(255), random(255));
   let craters = floor(random(5, 15));
 
@@ -73,19 +69,22 @@ function drawRandomizedPlanet(x, y) {
   }
 
   // Randomly decide whether to draw a moon
-  if (random() > 0.8) {
+  if (random() > 0.6) {
+    let moonSize = random(10, 30);
     drawMoon(x, y, planetSize);
-  }
+    }
 }
 
 // Function to draw a moon
-function drawMoon(planetX, planetY, planetSize) {
-  let moonDistance = random(50, 150);
-  let moonAngle = random(PI * 2);
-  let moonX = planetX + cos(moonAngle) * moonDistance;
-  let moonY = planetY + sin(moonAngle) * moonDistance;
+function drawMoon(planetX, planetY, moonDistance, moonSize) {
+  // distance from planet to moon is between 1.5 and 2 times planet radius
+  
+   let moonAngle =  random(PI * 2);   // any angle
+   let moonX = planetX + cos(moonAngle) * moonDistance;
+   let moonY = planetY + sin(moonAngle) * moonDistance;
+  
 
-  fill(200); // Moon color
-  let moonSize = random(10, 30);
+  fill(200); // Moon colour
+  
   ellipse(moonX, moonY, moonSize, moonSize);
 }

@@ -4,5 +4,16 @@ html, body {
 }
 
 canvas {
-  display: block;
+  display: flex;
+}
+
+.sketch {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+h1, p {
+  text-align: center;
+
 }

@@ -30,10 +30,6 @@ function draw() {
 
   // Draw a randomized planet in the center
   drawRandomizedPlanet(planetX, planetY, planetSize);
-
-  let moonDistance = planetSize * random(150, 200) / 100;
-  let moonSize = 20;  
-  drawMoon(planetX, planetY, moonDistance, moonSize);
  
 }
 
@@ -69,9 +65,10 @@ function drawRandomizedPlanet(x, y, planetSize) {
   }
 
   // Randomly decide whether to draw a moon
-  if (random() > 0.6) {
+  if (random() > 0.5) {
     let moonSize = random(10, 30);
-    drawMoon(x, y, planetSize);
+    let moonDistance = planetSize * random(150, 200) / 100;
+    drawMoon(x, y, moonDistance, moonSize);
     }
 }
 
